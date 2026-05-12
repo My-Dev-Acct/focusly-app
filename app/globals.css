@@ -1,26 +1,213 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Brand colors */
+  --color-bg: #FAF8F5;
+  --color-bg-dark: #1F1B16;
+  --color-text: #1A1A1A;
+  --color-text-dark: #F0EBE3;
+  --color-muted: #6B6560;
+  --color-muted-dark: #9E9590;
+  --color-coral: #FF5C39;
+  --color-coral-hover: #E84B28;
+  --color-coral-light: #FFF0EC;
+  --color-sage: #A8C99F;
+  --color-sage-light: #EEF5EC;
+  --color-white: #FFFFFF;
+  --color-card: #FFFFFF;
+  --color-border: #EAE5DF;
+  --color-border-dark: #2E2820;
+
+  /* Typography */
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-instrument-serif);
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(26, 26, 26, 0.06), 0 4px 16px rgba(26, 26, 26, 0.06);
+  --shadow-card-hover: 0 2px 8px rgba(26, 26, 26, 0.08), 0 8px 32px rgba(26, 26, 26, 0.1);
+
+  /* Radii */
+  --radius-card: 1.25rem;
+  --radius-btn: 0.625rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 
-@media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: light;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans), 'Inter', system-ui, sans-serif;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    font-weight: 600;
+  }
+
+  h1 {
+    letter-spacing: -0.02em;
+  }
+
+  /* Grain texture overlay — applied to body via a pseudo-element */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+    background-repeat: repeat;
+    opacity: 0.4;
+    z-index: 1000;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-serif {
+    font-family: var(--font-serif), 'Georgia', serif;
+  }
+
+  /* Serif italic accent — for the headline emphasis words */
+  .serif-accent {
+    font-family: var(--font-serif), 'Georgia', serif;
+    font-style: italic;
+    color: var(--color-coral);
+  }
+
+  /* Smooth focus ring */
+  .focus-ring {
+    outline: 2px solid var(--color-coral);
+    outline-offset: 3px;
+  }
+
+  /* Section gradient backgrounds */
+  .section-gradient-warm {
+    background: linear-gradient(160deg, #FAF8F5 0%, #FFF0EC 100%);
+  }
+
+  .section-gradient-sage {
+    background: linear-gradient(160deg, #FAF8F5 0%, #EEF5EC 100%);
+  }
+
+  /* Noise texture for sections */
+  .texture-noise {
+    position: relative;
+  }
+  .texture-noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    background-size: 150px 150px;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  .texture-noise > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* MDX / Blog prose styles */
+.prose {
+  color: var(--color-text);
+  max-width: 68ch;
+}
+.prose p {
+  margin-bottom: 1.4em;
+  line-height: 1.75;
+  font-size: 1.0625rem;
+}
+.prose h2 {
+  font-size: 1.625rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+}
+.prose h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+.prose ul, .prose ol {
+  padding-left: 1.5em;
+  margin-bottom: 1.4em;
+}
+.prose li {
+  margin-bottom: 0.4em;
+  line-height: 1.7;
+}
+.prose blockquote {
+  border-left: 3px solid var(--color-coral);
+  padding-left: 1.25em;
+  margin-left: 0;
+  color: var(--color-muted);
+  font-style: italic;
+  font-size: 1.125rem;
+}
+.prose a {
+  color: var(--color-coral);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+.prose code {
+  background: var(--color-border);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+.prose pre {
+  background: #1A1A1A;
+  color: #FAF8F5;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2.5em 0;
 }
