@@ -1,47 +1,98 @@
 "use client";
 
-import { motion } from "framer-motion";
-
-const companies = [
-  { name: "Linear", logo: "Linear" },
-  { name: "Vercel", logo: "▲ Vercel" },
-  { name: "Notion", logo: "Notion" },
-  { name: "Figma", logo: "Figma" },
-  { name: "Webflow", logo: "Webflow" },
-  { name: "Loom", logo: "Loom" },
+const testimonials = [
+  {
+    quote: "The no-pause rule changed everything for me. First app I've used consistently for more than a week.",
+    name: "Devon T.",
+    role: "Software engineer",
+  },
+  {
+    quote: "My client deliveries are 2x faster. I don't know how I worked before this.",
+    name: "Maya R.",
+    role: "Freelance illustrator",
+  },
+  {
+    quote: "47,000 words added to my dissertation in 9 months. That's the real number.",
+    name: "Priya S.",
+    role: "PhD candidate",
+  },
+  {
+    quote: "I've tried every productivity app. Focusly is the only one that actually costs something to quit.",
+    name: "James K.",
+    role: "Product designer",
+  },
+  {
+    quote: "Turns out I needed a commitment, not a calendar. Who knew.",
+    name: "Sasha M.",
+    role: "Copywriter",
+  },
+  {
+    quote: "The streak feature is quietly the most motivating thing I've added to my workday.",
+    name: "Tom L.",
+    role: "Indie developer",
+  },
+  {
+    quote: "I used to think Pomodoro was for people who weren't busy enough. I was wrong.",
+    name: "Ari W.",
+    role: "Marketing lead",
+  },
+  {
+    quote: "Three months in. Longest I've gone without opening Instagram during work. Ever.",
+    name: "Clara B.",
+    role: "UX researcher",
+  },
 ];
+
+const doubled = [...testimonials, ...testimonials];
 
 export default function SocialProof() {
   return (
-    <section className="py-12 border-y border-[#EAE5DF]">
-      <div className="max-w-[1200px] mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center gap-8"
-        >
-          <p className="text-[0.8125rem] uppercase tracking-[0.1em] text-[#6B6560] font-medium">
-            Trusted by focused humans at
-          </p>
+    <section className="py-12 border-y border-[#EAE5DF] overflow-hidden">
+      <style>{`
+        @keyframes ticker {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .ticker-track {
+          animation: ticker 40s linear infinite;
+          width: max-content;
+        }
+        .ticker-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
 
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
-            {companies.map((company, i) => (
-              <motion.span
-                key={company.name}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.07 }}
-                className="text-[1rem] font-semibold tracking-tight"
-                style={{ color: "#C4BDB6" }}
-              >
-                {company.logo}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
+      {/* Edge fades */}
+      <div className="relative">
+        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to right, #FAF8F5, transparent)" }} />
+        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to left, #FAF8F5, transparent)" }} />
+
+        <div className="ticker-track flex items-stretch gap-4 px-2">
+          {doubled.map((t, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 w-[300px] bg-white rounded-2xl border border-[#EAE5DF] px-5 py-4 shadow-[0_1px_3px_rgba(26,26,26,0.05)] flex flex-col gap-3"
+            >
+              <p className="text-[0.875rem] text-[#3D3832] leading-[1.6]">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <div className="flex items-center gap-2.5 pt-1 border-t border-[#EAE5DF]">
+                <div
+                  className="w-6 h-6 rounded-full flex items-center justify-center text-[0.625rem] font-bold text-white flex-shrink-0"
+                  style={{ background: "linear-gradient(135deg, #FF5C39, #E84B28)" }}
+                >
+                  {t.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[0.8125rem] font-semibold text-[#1A1A1A]">{t.name}</span>
+                  <span className="text-[0.8125rem] text-[#6B6560]"> · {t.role}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
